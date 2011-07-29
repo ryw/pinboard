@@ -1,6 +1,6 @@
 The Pinboard Ruby Gem
 =====================
-A Ruby wrapper for the Pinboard API
+A Ruby wrapper for the [Pinboard API](http://pinboard.in/api/).
 
 Installation
 ------------
