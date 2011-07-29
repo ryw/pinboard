@@ -2,10 +2,10 @@ require 'helper'
 
 describe Pinboard do
 
-  describe "#hello" do
+  describe ".new" do
 
-    it "is friendly" do
-      Pinboard.new.hello.should == "hi!"
+    it "returns a Pinboard client" do
+      Pinboard.new.should be_a Pinboard::Client
     end
 
   end

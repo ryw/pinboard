@@ -1,7 +1,9 @@
-class Pinboard
+require 'pinboard/client'
 
-  def hello
-    "hi!"
+module Pinboard
+  class << self
+    def new(options={})
+      Pinboard::Client.new(options)
+    end
   end
-
 end
