@@ -3,6 +3,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9'
   s.add_development_dependency 'rspec', '~> 2.6'
   s.add_development_dependency 'ZenTest', '~> 4.5'
+  s.add_development_dependency 'webmock', '~> 1.6'
+  s.add_runtime_dependency 'httparty', '~> 0.7'
   s.name = 'pinboard'
   s.version = '0.0.0'
   s.date = '2011-07-28'

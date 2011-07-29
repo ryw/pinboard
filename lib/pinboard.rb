@@ -1,4 +1,6 @@
+require 'hash'
 require 'pinboard/client'
+require 'pinboard/post'
 
 module Pinboard
   class << self
