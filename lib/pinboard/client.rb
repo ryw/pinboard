@@ -17,4 +17,3 @@ module Pinboard
     end
   end
 end
-

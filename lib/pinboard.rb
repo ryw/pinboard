@@ -7,5 +7,9 @@ module Pinboard
     def new(options={})
       Pinboard::Client.new(options)
     end
+
+    def endpoint
+      Pinboard::Client.base_uri
+    end
   end
 end

@@ -3,12 +3,12 @@ require 'helper'
 describe Pinboard::Client do
 
   describe "#posts_all" do
-    let(:client) { Pinboard::Client.new(
-                     :username => 'user',
-                     :password => 'pass') }
+    let(:client) { Pinboard::Client.new(auth_params) }
 
     before do
-      stub_posts_all
+      stub_get("posts/all").
+        to_return(:body => fixture("posts_all.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
     end
 
     it "returns a collection of posts" do
