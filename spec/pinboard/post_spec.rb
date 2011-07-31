@@ -14,7 +14,7 @@ describe Pinboard::Post do
     it "initializes attributes" do
       post.href.should        == 'http://foo.com'
       post.description.should == 'Foo!'
-      post.tag.should         == 'rspec pinboard'
+      post.tag.should         == %w{rspec pinboard}
       post.time.should        == Time.mktime(2011, 1, 1)
     end
 
