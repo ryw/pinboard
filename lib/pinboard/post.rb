@@ -1,12 +1,9 @@
 module Pinboard
-  class Post
-    attr_accessor :href, :description, :tag, :time
-
-    def initialize(options={})
-      @href = options[:href]
-      @description = options[:description]
-      @tag = options[:tag]
-      @time = options[:time]
+  class Post < Struct.new(:href, :description, :tag, :time)
+    def initialize(attributes={})
+      attributes.each do |attribute, value|
+        send("#{attribute}=", value) if respond_to?("#{attribute}=")
+      end
     end
   end
 end
