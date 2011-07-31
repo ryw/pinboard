@@ -1,4 +1,4 @@
-require 'hash'
+require 'pinboard/util'
 require 'pinboard/client'
 require 'pinboard/post'
 
