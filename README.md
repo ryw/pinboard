@@ -6,9 +6,54 @@ Installation
 ------------
     gem install pinboard
 
-Continuous Integration
-----------------------
+Examples
+--------
+    pinboard = Pinboard.client('username', 'password')
+    pinboard.posts #all posts
+    pinboard.posts(:tag => 'ruby') #all posts tagged 'ruby'
+    pinboard.posts(:start => 20) #starting on the 20th post
+    pinboard.posts(:results => 20) #return only first 20 matching posts
+    pinboard.posts(:from => 4.days.ago) #all posts in past 4 days
+    pinboard.posts(:to => 4.days.ago) #all posts up to 4 days ago
+    pinboard.posts(:meta => true) #include meta data in post models
+
+Hardy Client
+------------
+Similar to what Zach Moazeni implemented with the
+[Harvested Ruby Wrapper](https://github.com/zmoazeni/harvested),
+I plan to implement a hardy client option in some future release.
+
+Ruby Support & Continuous Integration
+-------------------------------------
+I am using [travis-ci.org](http://travis-ci.org) for continuous
+integration and support of the following rubies in rvm:
+
+ * 1.8.7
+ * 1.9.2
+ * jruby
+ * ree
+ * ruby-head
+
 [![Build Status](https://secure.travis-ci.org/ryw/pinboard.png)](http://travis-ci.org/ryw/pinboard)
+
+Links
+-----
+  * [Pinboard API Documentation](http://pinboard.in/api/)
+
+How to Contribute
+-----------------
+If you find what looks like a bug:
+
+  * Check the [GitHub issue tracker](http://github.com/ryw/pinboard/issues/)
+    to see if anyone else has had the same issue.
+  * If you don’t see anything, create an issue with information on how to reproduce it.
+
+If you want to contribute an enhancement or a fix:
+ 
+  * Fork the [project on github](http://github.com/ryw/pinboard).
+  * Make your changes with specs.
+  * Commit the changes without messing with the Rakefile, VERSION, or history.
+  * Send me a pull request.
 
 TODO
 ----
@@ -17,3 +62,7 @@ TODO
 * Throttle requests to one per second:
   http://datagraph.rubyforge.org/rack-throttle/
 * If get 503 response, double the throttle to two seconds
+
+Copyright
+---------
+Copyright (c) 2011 Ryan Walker. See MIT-LICENSE for details.
