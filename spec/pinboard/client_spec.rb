@@ -17,12 +17,12 @@ describe Pinboard::Client do
           :href => "http://foo.com/",
           :description => "Foo!",
           :tag => "foo bar",
-          :time => "2011-07-26T17:52:04Z"),
+          :time => Time.parse("2011-07-26T17:52:04Z")),
         Pinboard::Post.new(
           :href => "http://bar.com/",
           :description => "Bar!",
           :tag => "foo bar",
-          :time => "2011-07-26T17:52:04Z")
+          :time => Time.parse("2011-07-26T17:52:04Z"))
       ]
 
       client.all_posts.should == expected

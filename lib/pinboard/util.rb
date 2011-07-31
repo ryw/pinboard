@@ -8,5 +8,12 @@ module Pinboard
         options
       end
     end
+
+    def parse_time(time)
+      return time if time.is_a?(Time)
+      return time.to_time if time.is_a?(Date)
+
+      Time.parse(time)
+    end
   end
 end
