@@ -8,21 +8,25 @@ describe Pinboard::Client do
     before do
       stub_get("posts/all").
         to_return(:body => fixture("posts_all.xml"),
-                  :headers => { 'content-type' => 'text/xml' })
+        :headers => { 'content-type' => 'text/xml' })
     end
 
     it "returns a collection of posts" do
-       client.all_posts.count.should == 2
-    end
+      expected = [
+        Pinboard::Post.new(
+          :href => "http://foo.com/",
+          :description => "Foo!",
+          :tag => 'foo bar',
+          :time => Time.parse("2011-07-26T17:52:04Z")),
+        Pinboard::Post.new(
+          :href => "http://bar.com/",
+          :description => "Bar!",
+          :tag => 'foo bar',
+          :time => Time.parse("2011-07-26T17:52:04Z"))
+      ]
 
-    it "loads posts with valid attributes" do
-       post = client.all_posts.first
-       post.href.should_not be_nil
-       post.description.should_not be_nil
-       post.tag.should_not be_nil
-       post.time.should_not be_nil
+      client.all_posts.should == expected
     end
-
   end
 
 end

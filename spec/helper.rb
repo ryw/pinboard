@@ -13,7 +13,6 @@ end
 
 def stub_get(path)
   uri = "https://#{auth_params[:username]}:#{auth_params[:password]}@api.pinboard.in/v1/#{path}"
-  puts uri
   stub_request(:get, uri)
 end
 

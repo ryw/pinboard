@@ -13,7 +13,7 @@ module Pinboard
     def all_posts
       options = { :basic_auth => @auth }
       posts = self.class.get('/posts/all', options)['posts']['post']
-      posts.map { |p| Post.new(p.symbolize_keys) }
+      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
   end
 end
