@@ -12,17 +12,21 @@ describe Pinboard::Client do
     end
 
     it "returns a collection of posts" do
-      client.all_posts.count.should == 2
-    end
+      expected = [
+        Pinboard::Post.new(
+          :href => "http://foo.com/",
+          :description => "Foo!",
+          :tag => "foo bar",
+          :time => "2011-07-26T17:52:04Z"),
+        Pinboard::Post.new(
+          :href => "http://bar.com/",
+          :description => "Bar!",
+          :tag => "foo bar",
+          :time => "2011-07-26T17:52:04Z")
+      ]
 
-    it "loads posts with valid attributes" do
-      post = client.all_posts.first
-      post.href.should_not be_nil
-      post.description.should_not be_nil
-      post.tag.should_not be_nil
-      post.time.should_not be_nil
+      client.all_posts.should == expected
     end
-
   end
 
 end
