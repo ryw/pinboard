@@ -8,14 +8,14 @@ describe Pinboard::Post do
         :href => 'http://foo.com',
         :description => 'Foo!',
         :tag => 'rspec pinboard',
-        :time => '2011-01-01')
+        :time => Time.mktime(2011, 1, 1))
     }
 
     it "initializes attributes" do
       post.href.should        == 'http://foo.com'
       post.description.should == 'Foo!'
-      post.tag.should         == 'rspec pinboard'
-      post.time.should        == '2011-01-01'
+      post.tag.should         == %w{rspec pinboard}
+      post.time.should        == Time.mktime(2011, 1, 1)
     end
 
   end
