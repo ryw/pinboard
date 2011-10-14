@@ -65,7 +65,6 @@ If you want to contribute an enhancement or a fix:
 TODO
 ----
 
-* Implement posts/update and posts/all
 * Throttle requests to one per second:
   http://datagraph.rubyforge.org/rack-throttle/
 * If get 503 response, double the throttle to two seconds
