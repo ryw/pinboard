@@ -10,7 +10,7 @@ module Pinboard
                 :password => options[:password] }
     end
 
-    def all_posts
+    def posts
       options = { :basic_auth => @auth }
       posts = self.class.get('/posts/all', options)['posts']['post']
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }

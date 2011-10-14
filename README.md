@@ -8,20 +8,27 @@ Installation
 
 Examples
 --------
-    pinboard = Pinboard.client('username', 'password')
-    pinboard.posts #all posts
+
+I'm currently exploring two API interfaces:
+
+    pinboard = Pinboard::Client.new(:username => 'foo', :password => 'bar')
+    posts = pinboard.posts
+
+or:
+
+    posts = Pinboard::Post.all(:username => 'foo', :password => 'bar')
+
+Both examples work.
+
+Future Examples (I don't need them, so I haven't written them)
+--------------------------------------------------------------
+
     pinboard.posts(:tag => 'ruby') #all posts tagged 'ruby'
     pinboard.posts(:start => 20) #starting on the 20th post
     pinboard.posts(:results => 20) #return only first 20 matching posts
     pinboard.posts(:from => 4.days.ago) #all posts in past 4 days
     pinboard.posts(:to => 4.days.ago) #all posts up to 4 days ago
     pinboard.posts(:meta => true) #include meta data in post models
-
-Hardy Client
-------------
-Similar to what Zach Moazeni implemented with the
-[Harvested Ruby Wrapper](https://github.com/zmoazeni/harvested),
-I plan to implement a hardy client option in some future release.
 
 Ruby Support & Continuous Integration
 -------------------------------------

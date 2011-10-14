@@ -1,8 +1,7 @@
 require 'helper'
 
 describe Pinboard::Client do
-
-  describe "#posts_all" do
+  describe "#posts" do
     let(:client) { Pinboard::Client.new(auth_params) }
 
     before do
@@ -25,8 +24,7 @@ describe Pinboard::Client do
           :time => Time.parse("2011-07-26T17:52:04Z"))
       ]
 
-      client.all_posts.should == expected
+      client.posts.should == expected
     end
   end
-
 end
