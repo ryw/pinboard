@@ -10,18 +10,21 @@ Examples
 --------
 
 I'm currently exploring two API interfaces:
-````ruby
+
+```ruby
     pinboard = Pinboard::Client.new(:username => 'foo', :password => 'bar')
     posts = pinboard.posts
 ```
 or:
-````ruby
+
+```ruby
     posts = Pinboard::Post.all(:username => 'foo', :password => 'bar')
 ```
 Both examples work.
 
 Passing arguments: (works only for the Client API Interface)
-````ruby
+
+```ruby
 	pinboard.posts(:tag => 'ruby') #all posts tagged 'ruby'
 	pinboard.posts(:tag => 'ruby,pinboard') #all posts tagged 'ruby' and 'pinboard'
     pinboard.posts(:start => 20) #starting on the 20th post
