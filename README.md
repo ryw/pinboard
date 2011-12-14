@@ -11,23 +11,31 @@ Examples
 
 I'm currently exploring two API interfaces:
 
+```ruby
     pinboard = Pinboard::Client.new(:username => 'foo', :password => 'bar')
     posts = pinboard.posts
-
+```
 or:
 
+```ruby
     posts = Pinboard::Post.all(:username => 'foo', :password => 'bar')
-
+```
 Both examples work.
+
+Passing arguments: (works only for the Client API Interface)
+
+```ruby
+	pinboard.posts(:tag => 'ruby') #all posts tagged 'ruby'
+	pinboard.posts(:tag => 'ruby,pinboard') #all posts tagged 'ruby' and 'pinboard'
+    pinboard.posts(:start => 20) #starting on the 20th post
+    pinboard.posts(:results => 20) #return only first 20 matching posts
+    pinboard.posts(:fromdt => 4.days.ago) #all posts in past 4 days
+    pinboard.posts(:todt => 4.days.ago) #all posts up to 4 days ago
+```
 
 Future Examples (I don't need them, so I haven't written them)
 --------------------------------------------------------------
 
-    pinboard.posts(:tag => 'ruby') #all posts tagged 'ruby'
-    pinboard.posts(:start => 20) #starting on the 20th post
-    pinboard.posts(:results => 20) #return only first 20 matching posts
-    pinboard.posts(:from => 4.days.ago) #all posts in past 4 days
-    pinboard.posts(:to => 4.days.ago) #all posts up to 4 days ago
     pinboard.posts(:meta => true) #include meta data in post models
 
 Ruby Support & Continuous Integration
