@@ -5,7 +5,7 @@ describe Pinboard::Client do
     let(:client) { Pinboard::Client.new(auth_params) }
 
     before do
-      stub_get("posts/all").
+      stub_get("posts/all?").
         to_return(:body => fixture("posts_all.xml"),
         :headers => { 'content-type' => 'text/xml' })
     end
