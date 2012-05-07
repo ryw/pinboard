@@ -15,6 +15,7 @@ module Pinboard
       options[:basic_auth] = @auth
 			options[:query] = params
       posts = self.class.get('/posts/all', options)['posts']['post']
+      posts = Array.new(1, posts) if !posts.kind_of?(Array)
       if !posts.nil?
         posts.map { |p| Post.new(Util.symbolize_keys(p)) }
       end
