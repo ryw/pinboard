@@ -11,14 +11,13 @@ module Pinboard
     end
 
     def posts(params={})
-			options = {}
+      options = {}
       options[:basic_auth] = @auth
-			options[:query] = params
+      options[:query] = params
       posts = self.class.get('/posts/all', options)['posts']['post']
-      posts = Array.new(1, posts) if !posts.nil? && !posts.kind_of?(Array)
-      if !posts.nil?
-        posts.map { |p| Post.new(Util.symbolize_keys(p)) }
-      end
+      posts = [] if posts.nil?
+      posts = [posts] if posts.class != Array
+      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
   end
 end

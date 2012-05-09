@@ -7,7 +7,7 @@ describe Pinboard::Post do
 
     before do
       stub_get("posts/all").
-        to_return(:body => fixture("posts_all.xml"),
+        to_return(:body => fixture("multiple_posts.xml"),
                   :headers => { 'content-type' => 'text/xml' })
     end
 
@@ -23,7 +23,7 @@ describe Pinboard::Post do
       post.time.should == Time.parse('Tue Jul 26 17:52:04 UTC 2011')
     end
   end
-  
+
   describe ".new" do
     let(:post) {
       Pinboard::Post.new(
@@ -41,3 +41,4 @@ describe Pinboard::Post do
     end
   end
 end
+
