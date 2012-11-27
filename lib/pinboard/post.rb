@@ -1,5 +1,5 @@
 module Pinboard
-  class Post < Struct.new(:href, :description, :tag, :time)
+  class Post < Struct.new(:href, :description,:extended, :tag, :time)
     def self.all(options={})
       client = Pinboard::Client.new(options)
       posts = client.class.get('/posts/all',
