@@ -19,6 +19,7 @@ describe Pinboard::Post do
       post = posts.first
       post.href.should == "http://foo.com/"
       post.description.should == "Foo!"
+      post.extended.should == "long description Foo"
       post.tag.should == ["foo", "bar"]
       post.time.should == Time.parse('Tue Jul 26 17:52:04 UTC 2011')
     end
@@ -29,6 +30,7 @@ describe Pinboard::Post do
       Pinboard::Post.new(
         :href => 'http://foo.com',
         :description => 'Foo!',
+        :extended => "long description Foo",
         :tag => 'rspec pinboard',
         :time => Time.mktime(2011, 1, 1))
     }
@@ -36,6 +38,7 @@ describe Pinboard::Post do
     it "initializes attributes" do
       post.href.should        == 'http://foo.com'
       post.description.should == 'Foo!'
+      post.extended.should    == "long description Foo"
       post.tag.should         == %w{rspec pinboard}
       post.time.should        == Time.mktime(2011, 1, 1)
     end
