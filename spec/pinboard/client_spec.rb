@@ -17,11 +17,13 @@ describe Pinboard::Client do
             Pinboard::Post.new(
               :href => "http://foo.com/",
               :description => "Foo!",
+              :extended => "long description Foo",
               :tag => 'foo bar',
               :time => Time.parse("2011-07-26T17:52:04Z")),
             Pinboard::Post.new(
               :href => "http://bar.com/",
               :description => "Bar!",
+              :extended => "long description Bar",
               :tag => 'foo bar',
               :time => Time.parse("2011-07-26T17:52:04Z")),
           ]
