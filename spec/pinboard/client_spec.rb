@@ -55,6 +55,32 @@ describe Pinboard::Client do
         client.posts.should == []
       end
     end
+    
+    context "when calling #posts after a post has been deleted" do
+      before do
+        stub_get("posts/all?").
+          to_return(:body => fixture("single_post.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+        stub_get("posts/delete?url=http://bar.com/").
+          to_return(:body => fixture("deleted.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+      
+      it "returns a collection of posts without the deleted post" do
+        expected =
+          [
+            Pinboard::Post.new(
+              :href => "http://foo.com/",
+              :description => "Foo!",
+              :extended => "",
+              :tag => 'foo bar',
+              :time => Time.parse("2011-07-26T17:52:04Z"))
+          ]
+          
+        client.delete(:url => "http://bar.com/").body.should == fixture("deleted.xml").read
+        client.posts.should == expected
+      end
+    end
   end
   
   describe "#delete" do
