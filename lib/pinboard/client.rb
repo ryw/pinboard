@@ -19,5 +19,12 @@ module Pinboard
       posts = [posts] if posts.class != Array
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
+    
+    def delete(params={})
+      options = {}
+      options[:basic_auth] = @auth
+      options[:query] = params
+      self.class.get('/posts/delete', options)
+    end
   end
 end

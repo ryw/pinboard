@@ -62,21 +62,13 @@ describe Pinboard::Client do
     
     context "when there are many posts" do
       before do
-        stub_get("posts/all?").
-          to_return(:body => fixture("multiple_posts.xml"),
+        stub_get("posts/delete?url=http://bar.com/").
+          to_return(:body => fixture("deleted.xml"),
                     :headers => { 'content-type' => 'text/xml' })
       end
-      it "returns a collection of posts without the deleted post " do
-        expected =
-          [
-            Pinboard::Post.new(
-              :href => "http://bar.com/",
-              :description => "Bar!",
-              :extended => "long description Bar",
-              :tag => 'foo bar',
-              :time => Time.parse("2011-07-26T17:52:04Z")),
-          ]
-        client.delete("http://foo.com/").should == expected
+      
+      it "deletes a post" do
+        client.delete(:url => "http://bar.com/").body.should == fixture("deleted.xml").read
       end
     end
   end
