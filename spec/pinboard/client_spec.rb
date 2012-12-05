@@ -55,32 +55,6 @@ describe Pinboard::Client do
         client.posts.should == []
       end
     end
-    
-    context "when calling #posts after a post has been deleted" do
-      before do
-        stub_get("posts/all?").
-          to_return(:body => fixture("single_post.xml"),
-                    :headers => { 'content-type' => 'text/xml' })
-        stub_get("posts/delete?url=http://bar.com/").
-          to_return(:body => fixture("deleted.xml"),
-                    :headers => { 'content-type' => 'text/xml' })
-      end
-      
-      it "returns a collection of posts without the deleted post" do
-        expected =
-          [
-            Pinboard::Post.new(
-              :href => "http://foo.com/",
-              :description => "Foo!",
-              :extended => "",
-              :tag => 'foo bar',
-              :time => Time.parse("2011-07-26T17:52:04Z"))
-          ]
-          
-        client.delete(:url => "http://bar.com/").body.should == fixture("deleted.xml").read
-        client.posts.should == expected
-      end
-    end
   end
   
   describe "#delete" do
@@ -93,8 +67,20 @@ describe Pinboard::Client do
                     :headers => { 'content-type' => 'text/xml' })
       end
       
-      it "deletes a post" do
-        client.delete(:url => "http://bar.com/").body.should == fixture("deleted.xml").read
+      it "returns true" do
+        client.delete(:url => "http://bar.com/").should == true
+      end
+    end
+    
+    context "when specified url is not found" do
+      before do
+        stub_get("posts/delete?url=http://baz.com/").
+          to_return(:body => fixture("not_found.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+      
+      it "returns false" do
+        client.delete(:url => "http://baz.com/").should be_false
       end
     end
   end

@@ -24,7 +24,8 @@ module Pinboard
       options = {}
       options[:basic_auth] = @auth
       options[:query] = params
-      self.class.get('/posts/delete', options)
+      response = self.class.get('/posts/delete', options)
+      response.parsed_response["result"]["code"] == "done"
     end
   end
 end
