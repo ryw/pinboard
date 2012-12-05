@@ -56,4 +56,8 @@ describe Pinboard::Client do
       end
     end
   end
+  
+  describe "#delete" do
+    it "should delete the specified post"
+  end
 end
