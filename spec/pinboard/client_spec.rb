@@ -56,4 +56,32 @@ describe Pinboard::Client do
       end
     end
   end
+  
+  describe "#delete" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+    
+    context "when there are many posts" do
+      before do
+        stub_get("posts/delete?url=http://bar.com/").
+          to_return(:body => fixture("deleted.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+      
+      it "returns true" do
+        client.delete(:url => "http://bar.com/").should == true
+      end
+    end
+    
+    context "when specified url is not found" do
+      before do
+        stub_get("posts/delete?url=http://baz.com/").
+          to_return(:body => fixture("not_found.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+      
+      it "returns false" do
+        client.delete(:url => "http://baz.com/").should be_false
+      end
+    end
+  end
 end
