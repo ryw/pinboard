@@ -4,11 +4,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 2.6'
   s.add_development_dependency 'webmock', '~> 1.6'
   s.add_development_dependency 'guard-rspec', '~> 0.5'
-  if RUBY_PLATFORM =~ /darwin/
-    s.add_development_dependency "growl_notify"
-    s.add_development_dependency "rb-fsevent"
-  end
-  
+  s.add_development_dependency 'guard-bundler'
+  s.add_development_dependency 'libnotify'
+  s.add_development_dependency 'rb-inotify'
+  s.add_development_dependency 'rb-fsevent'
+  s.add_development_dependency 'terminal-notifier-guard'
+
   s.add_runtime_dependency 'httparty', '= 0.7.8'
   s.name = 'pinboard'
   s.version = '0.0.4'

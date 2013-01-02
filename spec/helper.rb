@@ -12,8 +12,15 @@ def a_get(path)
 end
 
 def stub_get(path)
-  uri = "https://#{auth_params[:username]}:#{auth_params[:password]}@api.pinboard.in/v1/#{path}"
-  stub_request(:get, uri)
+  stub_request(:get, uri(path))
+end
+
+def stub_post(path)
+  stub_request(:post, uri(path))
+end
+
+def uri(path)
+  "https://#{auth_params[:username]}:#{auth_params[:password]}@api.pinboard.in/v1/#{path}"
 end
 
 def fixture_path
