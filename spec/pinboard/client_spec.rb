@@ -67,8 +67,8 @@ describe Pinboard::Client do
                     :headers => { 'content-type' => 'text/xml' })
       end
 
-      it "returns true" do
-        client.delete(:url => "http://bar.com/").should == true
+      it "succeeds without raising an error" do
+        expect{client.delete(:url => "http://bar.com/")}.to_not raise_error
       end
     end
 
@@ -79,8 +79,8 @@ describe Pinboard::Client do
                     :headers => { 'content-type' => 'text/xml' })
       end
 
-      it "returns false" do
-        client.delete(:url => "http://baz.com/").should be_false
+      it "throws an error" do
+        expect{client.delete(:url => "http://baz.com/")}.to raise_error(Pinboard::Error, 'item not found')
       end
     end
   end
