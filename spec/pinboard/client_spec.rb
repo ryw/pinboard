@@ -19,12 +19,14 @@ describe Pinboard::Client do
               :description => "Foo!",
               :extended => "long description Foo",
               :tag => 'foo bar',
+              :toread => 'yes',
               :time => Time.parse("2011-07-26T17:52:04Z")),
             Pinboard::Post.new(
               :href => "http://bar.com/",
               :description => "Bar!",
               :extended => "long description Bar",
               :tag => 'foo bar',
+              :toread => 'yes',
               :time => Time.parse("2011-07-26T17:52:04Z")),
           ]
 
@@ -125,6 +127,110 @@ describe Pinboard::Client do
 
         it "succeeds without raising an exception" do
           expect {client.add(:url => "http://baz.com/", :description => 'title')}.to_not raise_error
+        end
+      end
+
+      context 'and toread is set to true' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&toread=yes").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :toread => true)}.to_not raise_error
+        end
+      end
+
+      context 'and toread is set to false' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&toread=no").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :toread => false)}.to_not raise_error
+        end
+      end
+
+      context 'and replace is set to true' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&replace=yes").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :replace => true)}.to_not raise_error
+        end
+      end
+
+      context 'and replace is set to false' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&replace=no").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :replace => false)}.to_not raise_error
+        end
+      end
+
+      context 'and shared is set to true' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&shared=yes").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :shared => true)}.to_not raise_error
+        end
+      end
+
+      context 'and shared is set to false' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&shared=no").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title', :shared => false)}.to_not raise_error
+        end
+      end
+
+      context 'and replace, shared, and toread are all set to true' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&replace=yes&shared=yes&toread=yes").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/",
+                             :description => 'title',
+                             :replace => true,
+                             :shared => true,
+                             :toread => true)}.to_not raise_error
+        end
+      end
+
+      context 'and replace, shared, and toread are all set to false' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title&replace=no&shared=no&toread=no").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/",
+                             :description => 'title',
+                             :replace => false,
+                             :shared => false,
+                             :toread => false)}.to_not raise_error
         end
       end
     end

@@ -29,6 +29,11 @@ module Pinboard
       # Pinboard expects multiple tags=foo,bar separated by comma instead of tag=foo&tag=bar
       params[:tags] = Array(params[:tags]).join(',') if params[:tags]
 
+      # Pinboard expects replace, shared and toread as yes/no instead of true/false
+      [:replace, :shared, :toread].each do |boolean|
+          params[boolean] = params[boolean] ? 'yes' : 'no' if params.has_key?(boolean)
+      end
+
       options[:query] = params
       result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
 
