@@ -25,6 +25,10 @@ module Pinboard
     def add(params={})
       options = {}
       options[:basic_auth] = @auth
+
+      # Pinboard expects multiple tags=foo,bar separated by comma instead of tag=foo&tag=bar
+      params[:tags] = Array(params[:tags]).join(',') if params[:tags]
+
       options[:query] = params
       result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
 
