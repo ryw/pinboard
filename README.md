@@ -33,6 +33,13 @@ Passing arguments: (works only for the Client API Interface)
     pinboard.posts(:todt => 4.days.ago) #all posts up to 4 days ago
 ```
 
+Adding new posts:
+
+```ruby
+  pinboard.add(:url => "http://example.com/", :description => 'Example post')
+```
+
+
 Future Examples (I don't need them, so I haven't written them)
 --------------------------------------------------------------
 
@@ -64,7 +71,7 @@ If you find what looks like a bug:
   * If you don’t see anything, create an issue with information on how to reproduce it.
 
 If you want to contribute an enhancement or a fix:
- 
+
   * Fork the [project on github](http://github.com/ryw/pinboard).
   * Make your changes with specs.
   * Commit the changes without messing with the Rakefile, VERSION, or history.

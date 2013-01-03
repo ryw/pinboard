@@ -56,31 +56,76 @@ describe Pinboard::Client do
       end
     end
   end
-  
+
   describe "#delete" do
     let(:client) { Pinboard::Client.new(auth_params) }
-    
+
     context "when there are many posts" do
       before do
         stub_get("posts/delete?url=http://bar.com/").
           to_return(:body => fixture("deleted.xml"),
                     :headers => { 'content-type' => 'text/xml' })
       end
-      
+
       it "returns true" do
         client.delete(:url => "http://bar.com/").should == true
       end
     end
-    
+
     context "when specified url is not found" do
       before do
         stub_get("posts/delete?url=http://baz.com/").
           to_return(:body => fixture("not_found.xml"),
                     :headers => { 'content-type' => 'text/xml' })
       end
-      
+
       it "returns false" do
         client.delete(:url => "http://baz.com/").should be_false
+      end
+    end
+  end
+
+  describe "#add" do
+    let(:client) do
+      Pinboard::Client.new(auth_params)
+    end
+
+    context "where the post does not exist yet" do
+
+      context 'and the url is missing' do
+        before do
+          stub_post("posts/add").
+            to_return(:body => fixture("missing_url.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "throws an error" do
+          expect { client.add(nil) }.to raise_error
+        end
+      end
+
+      context 'and the description is missing' do
+        before do
+          stub_post("posts/add?url=http://baz.com/").
+            to_return(:body => fixture("missing_description.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "throws an error" do
+          expect { client.add(:url => "http://baz.com/") }.to raise_error(Pinboard::Error, 'missing description')
+        end
+      end
+
+      context 'and the description is present' do
+        before do
+          stub_post("posts/add?url=http://baz.com/&description=title").
+            to_return(:body => fixture("created.xml"),
+                      :headers => { 'content-type' => 'text/xml' })
+        end
+
+        it "succeeds without raising an exception" do
+          expect {client.add(:url => "http://baz.com/", :description => 'title')}.to_not raise_error
+        end
       end
     end
   end
