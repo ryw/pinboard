@@ -58,6 +58,8 @@ integration and support of the following rubies in rvm:
 
 [![Build Status](https://secure.travis-ci.org/ryw/pinboard.png)](http://travis-ci.org/ryw/pinboard)
 
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ryw/pinboard)
+
 Links
 -----
   * [Pinboard API Documentation](http://pinboard.in/api/)
