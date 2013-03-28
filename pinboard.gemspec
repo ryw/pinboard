@@ -12,12 +12,12 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'httparty', '= 0.7.8'
   s.name = 'pinboard'
-  s.version = '0.0.5'
-  s.date = '2012-05-08'
+  s.version = '0.0.51'
+  s.date = '2013-03-28'
   s.summary = "Ruby wrapper for the Pinboard API"
   s.description = "Ruby wrapper for the Pinboard API"
   s.authors = ["Ryan Waker"]
-  s.email = 'ry@anotherventure.com'
+  s.email = 'ry@rywalker.com'
   s.require_paths = ['lib']
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- spec/*`.split("\n")
