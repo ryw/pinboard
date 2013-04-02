@@ -85,6 +85,16 @@ module Pinboard
       tags.map { |p| Tag.new(Util.symbolize_keys(p)) }
     end
 
+    def tags_rename(old_tag, new_tag=nil, params={})
+      params[:old] = old_tag
+      params[:new] = new_tag if new_tag
+
+      options = create_params(params)
+      result_code = self.class.get('/tags/rename', options).parsed_response["result"]
+
+      raise Error.new(result_code) if result_code != "done"
+    end
+
     private
     def create_params params
       options = {}
