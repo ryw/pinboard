@@ -103,6 +103,14 @@ module Pinboard
       nil
     end
 
+    def notes_list(params={})
+      options = create_params(params)
+      notes = self.class.get('/notes/list', options)['notes']['note']
+      notes = [] if notes.nil?
+      notes = [*notes]
+      notes.map { |p| Note.new(Util.symbolize_keys(p)) }
+    end
+
     private
     def create_params params
       options = {}
