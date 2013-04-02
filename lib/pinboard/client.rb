@@ -77,6 +77,14 @@ module Pinboard
       raise Error.new(result_code) if result_code != "done"
     end
 
+    def tags_get(params={})
+      options = create_params(params)
+      tags = self.class.get('/tags/get', options)['tags']['tag']
+      tags = [] if tags.nil?
+      tags = [*tags]
+      tags.map { |p| Tag.new(Util.symbolize_keys(p)) }
+    end
+
     private
     def create_params params
       options = {}
