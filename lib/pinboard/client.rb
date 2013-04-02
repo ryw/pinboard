@@ -1,4 +1,5 @@
 require 'httparty'
+require 'time'
 
 module Pinboard
   Error = Class.new(StandardError)
@@ -42,6 +43,31 @@ module Pinboard
       result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
+    end
+
+    def update
+      options = create_params({})
+      time = self.class.get('/posts/update', options)["update"]["time"]
+
+      Time.parse time
+    end
+
+    def recent(params={})
+      options = create_params(params)
+      posts = self.class.get('/posts/recent', options)['posts']['post']
+      posts = [] if posts.nil?
+      posts = [*posts]
+      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
+    end
+
+    def dates(params={})
+      options = create_params(params)
+      dates = self.class.get('/posts/dates', options)['dates']['date']
+      dates = [] if dates.nil?
+      dates = [*dates]
+      dates.each_with_object({}) { |value, hash|
+        hash[value["date"]] = value["count"].to_i
+      }
     end
 
     def delete(params={})
