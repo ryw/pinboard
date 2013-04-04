@@ -95,6 +95,14 @@ module Pinboard
       raise Error.new(result_code) if result_code != "done"
     end
 
+    def tags_delete(tag, params={})
+      params[:tag] = tag
+
+      options = create_params(params)
+      self.class.get('/tags/delete', options)
+      nil
+    end
+
     private
     def create_params params
       options = {}
