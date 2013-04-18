@@ -8,14 +8,21 @@ module Pinboard
     base_uri 'api.pinboard.in:443/v1'
 
     def initialize(options={})
-      @auth = { :username => options[:username],
-                :password => options[:password] }
+      @auth       = nil
+      @auth_token = nil
+
+      if (token=options.delete(:token))
+        @auth_token = token
+      else
+        @auth = {
+          username: options[:username],
+          password: options[:password]
+        }
+      end
     end
 
     def posts(params={})
-      options = {}
-      options[:basic_auth] = @auth
-      options[:query] = params
+      options = create_params(params)
       posts = self.class.get('/posts/all', options)['posts']['post']
       posts = [] if posts.nil?
       posts = [posts] if posts.class != Array
@@ -23,9 +30,6 @@ module Pinboard
     end
 
     def add(params={})
-      options = {}
-      options[:basic_auth] = @auth
-
       # Pinboard expects multiple tags=foo,bar separated by comma instead of tag=foo&tag=bar
       params[:tags] = Array(params[:tags]).join(',') if params[:tags]
 
@@ -34,19 +38,31 @@ module Pinboard
           params[boolean] = params[boolean] ? 'yes' : 'no' if params.has_key?(boolean)
       end
 
-      options[:query] = params
+      options = create_params(params)
       result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
     end
 
     def delete(params={})
-      options = {}
-      options[:basic_auth] = @auth
-      options[:query] = params
+      options = create_params(params)
       result_code = self.class.get('/posts/delete', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
+    end
+
+    private
+    def create_params params
+      options = {}
+      options[:query] = params
+
+      if @auth_token
+        options[:query].merge!(auth_token: @auth_token)
+      else
+        options[:basic_auth] = @auth
+      end
+
+      options
     end
   end
 end
