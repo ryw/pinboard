@@ -1,4 +1,5 @@
 require 'httparty'
+require 'time'
 
 module Pinboard
   Error = Class.new(StandardError)
@@ -44,11 +45,70 @@ module Pinboard
       raise Error.new(result_code) if result_code != "done"
     end
 
+    def update
+      options = create_params({})
+      time = self.class.get('/posts/update', options)["update"]["time"]
+
+      Time.parse time
+    end
+
+    def recent(params={})
+      options = create_params(params)
+      posts = self.class.get('/posts/recent', options)['posts']['post']
+      posts = [] if posts.nil?
+      posts = [*posts]
+      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
+    end
+
+    def dates(params={})
+      options = create_params(params)
+      dates = self.class.get('/posts/dates', options)['dates']['date']
+      dates = [] if dates.nil?
+      dates = [*dates]
+      dates.each_with_object({}) { |value, hash|
+        hash[value["date"]] = value["count"].to_i
+      }
+    end
+
     def delete(params={})
       options = create_params(params)
       result_code = self.class.get('/posts/delete', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
+    end
+
+    def tags_get(params={})
+      options = create_params(params)
+      tags = self.class.get('/tags/get', options)['tags']['tag']
+      tags = [] if tags.nil?
+      tags = [*tags]
+      tags.map { |p| Tag.new(Util.symbolize_keys(p)) }
+    end
+
+    def tags_rename(old_tag, new_tag=nil, params={})
+      params[:old] = old_tag
+      params[:new] = new_tag if new_tag
+
+      options = create_params(params)
+      result_code = self.class.get('/tags/rename', options).parsed_response["result"]
+
+      raise Error.new(result_code) if result_code != "done"
+    end
+
+    def tags_delete(tag, params={})
+      params[:tag] = tag
+
+      options = create_params(params)
+      self.class.get('/tags/delete', options)
+      nil
+    end
+
+    def notes_list(params={})
+      options = create_params(params)
+      notes = self.class.get('/notes/list', options)['notes']['note']
+      notes = [] if notes.nil?
+      notes = [*notes]
+      notes.map { |p| Note.new(Util.symbolize_keys(p)) }
     end
 
     private

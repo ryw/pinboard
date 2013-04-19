@@ -1,6 +1,8 @@
 require 'pinboard/util'
 require 'pinboard/client'
 require 'pinboard/post'
+require 'pinboard/tag'
+require 'pinboard/note'
 
 module Pinboard
   class << self
