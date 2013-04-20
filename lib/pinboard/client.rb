@@ -52,7 +52,10 @@ module Pinboard
       Time.parse time
     end
 
-    def recent(params={})
+    def recent(tag=nil, count=nil, params={})
+      params[:tag]   = tag if tag
+      params[:count] = count if count
+
       options = create_params(params)
       posts = self.class.get('/posts/recent', options)['posts']['post']
       posts = [] if posts.nil?
@@ -60,7 +63,9 @@ module Pinboard
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
 
-    def dates(params={})
+    def dates(tag=nil, params={})
+      params[:tag] = tag if tag
+
       options = create_params(params)
       dates = self.class.get('/posts/dates', options)['dates']['date']
       dates = [] if dates.nil?
