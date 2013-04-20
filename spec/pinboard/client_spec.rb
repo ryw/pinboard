@@ -251,4 +251,37 @@ describe Pinboard::Client do
       client.update.should == expected
     end
   end
+
+  describe "#recent" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    before do
+      stub_get("posts/recent?").
+        to_return(:body => fixture("multiple_posts.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
+    end
+
+    it "returns recent items" do
+
+      expected =
+        [
+          Pinboard::Post.new(
+            :href => "http://foo.com/",
+            :description => "Foo!",
+            :extended => "long description Foo",
+            :tag => 'foo bar',
+            :toread => 'yes',
+            :time => Time.parse("2011-07-26T17:52:04Z")),
+            Pinboard::Post.new(
+              :href => "http://bar.com/",
+              :description => "Bar!",
+              :extended => "long description Bar",
+              :tag => 'foo bar',
+              :toread => 'yes',
+              :time => Time.parse("2011-07-26T17:52:04Z")),
+      ]
+
+      client.recent.should == expected
+    end
+  end
 end
