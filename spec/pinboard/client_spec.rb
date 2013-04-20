@@ -235,4 +235,20 @@ describe Pinboard::Client do
       end
     end
   end
+
+  describe "#update" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    before do
+      stub_get("posts/update?").
+        to_return(:body => fixture("post_update.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
+    end
+
+    it "returns the time of last update" do
+      expected = Time.parse "2013-04-20 13:58:56 +0200"
+
+      client.update.should == expected
+    end
+  end
 end
