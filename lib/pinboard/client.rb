@@ -52,10 +52,7 @@ module Pinboard
       Time.parse time
     end
 
-    def recent(tag=nil, count=nil, params={})
-      params[:tag]   = tag if tag
-      params[:count] = count if count
-
+    def recent(params={})
       options = create_params(params)
       posts = self.class.get('/posts/recent', options)['posts']['post']
       posts = [] if posts.nil?
