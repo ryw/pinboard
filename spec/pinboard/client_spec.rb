@@ -262,9 +262,7 @@ describe Pinboard::Client do
     end
 
     it "returns recent items" do
-
-      expected =
-        [
+      expected = [
           Pinboard::Post.new(
             :href => "http://foo.com/",
             :description => "Foo!",
@@ -282,6 +280,48 @@ describe Pinboard::Client do
       ]
 
       client.recent.should == expected
+    end
+  end
+
+  describe "#dates" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    context "unfiltered" do
+      before do
+        stub_get("posts/dates?").
+          to_return(:body => fixture("dates.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+
+      it "returns a list of dates with the number of posts at each date" do
+
+        expected = {
+          "2013-04-19" => 1,
+          "2013-04-18" => 2,
+          "2013-04-17" => 3
+        }
+
+        client.dates.should == expected
+      end
+    end
+
+    context "filtered by tag" do
+      before do
+        stub_get("posts/dates?tag=tag").
+          to_return(:body => fixture("dates_filtered.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+
+      it "returns a list of dates with the number of posts at each date" do
+
+        expected = {
+          "2013-04-19" => 1,
+          "2013-04-18" => 2,
+          "2013-04-17" => 3
+        }
+
+        client.dates("tag").should == expected
+      end
     end
   end
 end
