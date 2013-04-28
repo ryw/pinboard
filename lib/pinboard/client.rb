@@ -100,7 +100,8 @@ module Pinboard
     #
     # @return [Hash<String,Fixnum>] List of dates with number of posts
     #                               at each date
-    def dates(tag=nil, params={})
+    def dates(tag=nil)
+      params = {}
       params[:tag] = tag if tag
 
       options = create_params(params)
@@ -116,7 +117,8 @@ module Pinboard
     # Delete a bookmark
     #
     # @param [String] url The url to delete
-    def delete(params={})
+    def delete(url)
+      params = { url: url }
       options = create_params(params)
       result_code = self.class.get('/posts/delete', options).parsed_response["result"]["code"]
 
@@ -155,8 +157,8 @@ module Pinboard
     #
     # @param [String] tag Tag to delete
     # @return [nil]
-    def tags_delete(tag, params={})
-      params[:tag] = tag
+    def tags_delete(tag)
+      params = { tag: tag }
 
       options = create_params(params)
       self.class.get('/tags/delete', options)
