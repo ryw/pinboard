@@ -15,5 +15,18 @@ module Pinboard
         send("#{attribute}=", value) if respond_to?("#{attribute}=")
       end
     end
+
+    def to_json(*args)
+      {
+        href:         href,
+        description:  description,
+        extended:     extended,
+        tag:          tag,
+        time:         time,
+        replace:      replace,
+        shared:       shared,
+        toread:       toread
+      }.to_json(*args)
+    end
   end
 end

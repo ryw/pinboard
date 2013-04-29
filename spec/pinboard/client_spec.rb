@@ -70,7 +70,7 @@ describe Pinboard::Client do
       end
 
       it "succeeds without raising an error" do
-        expect{client.delete(:url => "http://bar.com/")}.to_not raise_error
+        expect{client.delete("http://bar.com/")}.to_not raise_error
       end
     end
 
@@ -82,7 +82,7 @@ describe Pinboard::Client do
       end
 
       it "throws an error" do
-        expect{client.delete(:url => "http://baz.com/")}.to raise_error(Pinboard::Error, 'item not found')
+        expect{client.delete("http://baz.com/")}.to raise_error(Pinboard::Error, 'item not found')
       end
     end
   end
@@ -232,6 +232,95 @@ describe Pinboard::Client do
                              :shared => false,
                              :toread => false)}.to_not raise_error
         end
+      end
+    end
+  end
+
+  describe "#update" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    before do
+      stub_get("posts/update?").
+        to_return(:body => fixture("post_update.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
+    end
+
+    it "returns the time of last update" do
+      expected = Time.parse "2013-04-20 13:58:56 +0200"
+
+      client.update.should == expected
+    end
+  end
+
+  describe "#recent" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    before do
+      stub_get("posts/recent?").
+        to_return(:body => fixture("multiple_posts.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
+    end
+
+    it "returns recent items" do
+      expected = [
+          Pinboard::Post.new(
+            :href => "http://foo.com/",
+            :description => "Foo!",
+            :extended => "long description Foo",
+            :tag => 'foo bar',
+            :toread => 'yes',
+            :time => Time.parse("2011-07-26T17:52:04Z")),
+            Pinboard::Post.new(
+              :href => "http://bar.com/",
+              :description => "Bar!",
+              :extended => "long description Bar",
+              :tag => 'foo bar',
+              :toread => 'yes',
+              :time => Time.parse("2011-07-26T17:52:04Z")),
+      ]
+
+      client.recent.should == expected
+    end
+  end
+
+  describe "#dates" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+
+    context "unfiltered" do
+      before do
+        stub_get("posts/dates?").
+          to_return(:body => fixture("dates.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+
+      it "returns a list of dates with the number of posts at each date" do
+
+        expected = {
+          "2013-04-19" => 1,
+          "2013-04-18" => 2,
+          "2013-04-17" => 3
+        }
+
+        client.dates.should == expected
+      end
+    end
+
+    context "filtered by tag" do
+      before do
+        stub_get("posts/dates?tag=tag").
+          to_return(:body => fixture("dates_filtered.xml"),
+                    :headers => { 'content-type' => 'text/xml' })
+      end
+
+      it "returns a list of dates with the number of posts at each date" do
+
+        expected = {
+          "2013-04-19" => 1,
+          "2013-04-18" => 2,
+          "2013-04-17" => 3
+        }
+
+        client.dates("tag").should == expected
       end
     end
   end
