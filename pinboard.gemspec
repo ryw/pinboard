@@ -10,13 +10,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rb-fsevent'
   s.add_development_dependency 'terminal-notifier-guard'
 
-  s.add_runtime_dependency 'httparty', '= 0.7.8'
+  s.add_runtime_dependency 'httparty', '= 0.11.0'
   s.name = 'pinboard'
-  s.version = '0.0.51'
-  s.date = '2013-03-28'
+  s.version = '0.1.0'
+  s.date = '2013-04-28'
   s.summary = "Ruby wrapper for the Pinboard API"
   s.description = "Ruby wrapper for the Pinboard API"
-  s.authors = ["Ryan Waker"]
+  s.authors = ["Ry Waker", "Jan-Erik Rediger"]
   s.email = 'ry@rywalker.com'
   s.require_paths = ['lib']
   s.files = `git ls-files`.split("\n")
