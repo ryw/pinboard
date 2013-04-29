@@ -50,10 +50,9 @@ Ruby Support & Continuous Integration
 I am using [travis-ci.org](http://travis-ci.org) for continuous
 integration and support of the following rubies in rvm:
 
- * 1.8.7
- * 1.9.2
+ * 1.9.3
+ * 2.0.0
  * jruby
- * ree
  * ruby-head
 
 [![Build Status](https://secure.travis-ci.org/ryw/pinboard.png)](http://travis-ci.org/ryw/pinboard)
