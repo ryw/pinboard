@@ -169,7 +169,7 @@ module Pinboard
     #
     # @return [Array<Note>] list of notes
     def notes_list
-      options = create_params(params)
+      options = create_params({})
       notes = self.class.get('/notes/list', options)['notes']['note']
       notes = [] if notes.nil?
       notes = [*notes]

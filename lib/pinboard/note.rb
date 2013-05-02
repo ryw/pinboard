@@ -1,5 +1,5 @@
 module Pinboard
-  class Note < Struct.new(:id, :title, :created_at, :updated_at, :length)
+  class Note < Struct.new(:id, :title, :created_at, :updated_at, :length, :text)
     def initialize(attributes={})
       self.id         = attributes[:id]
       self.title      = attributes[:title]
