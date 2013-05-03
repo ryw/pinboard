@@ -324,4 +324,19 @@ describe Pinboard::Client do
       end
     end
   end
+
+  describe "#notes_list" do
+    let(:client) { Pinboard::Client.new(auth_params) }
+    before do
+      stub_get("notes/list?").
+        to_return(:body => fixture("notes_list.xml"),
+                  :headers => { 'content-type' => 'text/xml' })
+    end
+
+    it "returns a list of notes" do
+      notes = client.notes_list
+      notes.size.should == 2
+      notes.first.title.should == "Paul Graham on Hirin' The Ladies"
+    end
+  end
 end
