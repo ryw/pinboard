@@ -31,7 +31,7 @@ module Pinboard
 
     # Returns all bookmarks in the user's account.
     #
-    # @return [Array<Post>] the list of bookmarks.
+    # @return [Array<Post>] the list of bookmarks
     def posts(params={})
       options = create_params(params)
       posts = self.class.get('/posts/all', options)['posts']['post']
@@ -50,6 +50,9 @@ module Pinboard
     # @option params [Boolean] :replace Replace any existing bookmark with this URL (default: true)
     # @option params [Boolean] :shared Make bookmark public (default: true)
     # @option params [Boolean] :toread Marks the bookmark as unread (default: false)
+    #
+    # @return [String] "done" when everything went as expected
+    # @raise [Error] if result code is not "done"
     def add(params={})
       # Pinboard expects multiple tags=foo,bar separated by comma instead of tag=foo&tag=bar
       params[:tags] = Array(params[:tags]).join(',') if params[:tags]
@@ -63,6 +66,8 @@ module Pinboard
       result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
+
+      result_code
     end
 
     # Returns the most recent time a bookmark was added, updated or deleted.
@@ -85,7 +90,7 @@ module Pinboard
     # @option params [String] :count Number of results to return.
     #                                Default is 15, max is 100
     #
-    # @return [Array<Post>] the list of recent posts.
+    # @return [Array<Post>] the list of recent posts
     def recent(params={})
       options = create_params(params)
       posts = self.class.get('/posts/recent', options)['posts']['post']
@@ -94,7 +99,7 @@ module Pinboard
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
 
-    # Returns a list of dates with the number of posts at each date.
+    # Returns a list of dates with the number of posts at each date
     #
     # @param [String] tag Filter by up to three tags
     #
@@ -117,12 +122,17 @@ module Pinboard
     # Delete a bookmark
     #
     # @param [String] url The url to delete
+    #
+    # @return [String] "done" when everything went as expected
+    # @raise [Error] if result code is not "done"
     def delete(url)
       params = { url: url }
       options = create_params(params)
       result_code = self.class.get('/posts/delete', options).parsed_response["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
+
+      result_code
     end
 
     # Returns a full list of the user's tags along with the number of
@@ -142,6 +152,7 @@ module Pinboard
     # @param [String] old_tag Tag to rename (not case sensitive)
     # @param [String] new_tag New tag (if empty nothing will happen)
     #
+    # @return [String] "done" when everything went as expected
     # @raise [Error] if result code is not "done"
     def tags_rename(old_tag, new_tag=nil, params={})
       params[:old] = old_tag
@@ -151,6 +162,8 @@ module Pinboard
       result_code = self.class.get('/tags/rename', options).parsed_response["result"]
 
       raise Error.new(result_code) if result_code != "done"
+
+      result_code
     end
 
     # Delete an existing tag
