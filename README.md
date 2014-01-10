@@ -88,3 +88,4 @@ TODO
 Copyright
 ---------
 Copyright (c) 2011 Ryan Walker. See MIT-LICENSE for details.
+Copyright (c) 2013-2014 Jan-Erik Rediger.
