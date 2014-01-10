@@ -3,8 +3,8 @@ module Pinboard
     def initialize(attributes={})
       self.id         = attributes[:id]
       self.title      = attributes[:title]
-      self.created_at = Util.parse_time(attributes[:created_at])
-      self.updated_at = Util.parse_time(attributes[:updated_at])
+      self.created_at = attributes[:created_at] && Util.parse_time(attributes[:created_at])
+      self.updated_at = attributes[:updated_at] && Util.parse_time(attributes[:updated_at])
       self.length     = attributes[:length].to_i
       self.text       = attributes[:text]
     end
