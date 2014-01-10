@@ -189,6 +189,27 @@ module Pinboard
       notes.map { |p| Note.new(Util.symbolize_keys(p)) }
     end
 
+    # Returns the note
+    #
+    # @return [Note] the note
+    def notes_get id
+      options = create_params({})
+      note = self.class.get("/notes/#{id}", options)['note']
+
+      return nil unless note
+
+      # Complete hack, because the API is still broken
+      content = '__content__'
+      Note.new({
+        id:      note['id'],
+        # Remove whitespace around the title,
+        # because of missing xml tag around
+        title:   note[content].gsub(/\n|  +/, ''),
+        length:  note['length'][content].to_i,
+        text:    note['text'][content]
+      })
+    end
+
     private
     # Construct params hash for HTTP request
     #
