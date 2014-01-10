@@ -45,19 +45,6 @@ Future Examples (I don't need them, so I haven't written them)
 
     pinboard.posts(:meta => true) #include meta data in post models
 
-Ruby Support & Continuous Integration
--------------------------------------
-I am using [travis-ci.org](http://travis-ci.org) for continuous
-integration and support of the following rubies in rvm:
-
- * 1.9.3
- * 2.0.0
- * jruby
- * ruby-head
-
-[![Build Status](https://secure.travis-ci.org/ryw/pinboard.png)](http://travis-ci.org/ryw/pinboard)
-
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ryw/pinboard)
 
 Links
 -----
@@ -67,13 +54,13 @@ How to Contribute
 -----------------
 If you find what looks like a bug:
 
-  * Check the [GitHub issue tracker](http://github.com/ryw/pinboard/issues/)
+  * Check the [GitHub issue tracker](http://github.com/badboy/pinboard/issues/)
     to see if anyone else has had the same issue.
   * If you don’t see anything, create an issue with information on how to reproduce it.
 
 If you want to contribute an enhancement or a fix:
 
-  * Fork the [project on github](http://github.com/ryw/pinboard).
+  * Fork the [project on github](http://github.com/badboy/pinboard).
   * Make your changes with specs.
   * Commit the changes without messing with the Rakefile, VERSION, or history.
   * Send me a pull request.
@@ -87,4 +74,6 @@ TODO
 
 Copyright
 ---------
-Copyright (c) 2011 Ryan Walker. See MIT-LICENSE for details.
+Copyright (c) 2011 Ryan Walker.
+Copyright (c) 2013-2014 Jan-Erik Rediger.
+See MIT-LICENSE for details.
