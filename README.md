@@ -12,9 +12,13 @@ Examples
 I'm currently exploring two API interfaces:
 
 ```ruby
-    pinboard = Pinboard::Client.new(:username => 'foo', :password => 'bar')
+    pinboard = Pinboard::Client.new(:token => 'your_api_token')
     posts = pinboard.posts
 ```
+
+Your [API token](https://blog.pinboard.in/2012/07/api_authentication_tokens/) can be found on your
+[settings/password](https://pinboard.in/settings/password) page.
+
 or:
 
 ```ruby
