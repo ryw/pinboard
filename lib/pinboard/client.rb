@@ -31,6 +31,12 @@ module Pinboard
 
     # Returns all bookmarks in the user's account.
     #
+    # @option params [String] :tag filter by up to three tags
+    # @option params [Integer] :start offset value (default is 0)
+    # @option params [Integer] :results number of results to return. Default is all
+    # @option params [Time] :fromdt return only bookmarks created after this time
+    # @option params [Time] :todt return only bookmarks created before this time
+    # @option params [Integer] :meta include a change detection signature for each bookmark
     # @return [Array<Post>] the list of bookmarks
     def posts(params={})
       options = create_params(params)
@@ -44,11 +50,17 @@ module Pinboard
     #
     # @param [Hash] params Arguments for this call
     # @option params [String] :url the URL of the item (required)
-    # @option params [String] :description Title of the item
+    # @option params [String] :description Title of the item (required)
     # @option params [String] :extended Description of the item
     # @option params [Array] :tags List of up to 100 tags
-    # @option params [Boolean] :replace Replace any existing bookmark with this URL (default: true)
-    # @option params [Boolean] :shared Make bookmark public (default: true)
+    # @option params [Time] :dt creation time for this bookmark. Defaults to current
+    #   time. Datestamps more than 10 minutes ahead of server time will be reset to
+    #   current server time
+    # @option params [Boolean] :replace Replace any existing bookmark with this URL.
+    #   Default is true. If set to false, will throw an error if bookmark exists
+    # @option params [Boolean] :shared Make bookmark public. Default is true unless
+    #   user has enabled the "save all bookmarks as private" user setting, in which
+    #   case default is false
     # @option params [Boolean] :toread Marks the bookmark as unread (default: false)
     #
     # @return [String] "done" when everything went as expected
@@ -154,7 +166,8 @@ module Pinboard
     #
     # @return [String] "done" when everything went as expected
     # @raise [Error] if result code is not "done"
-    def tags_rename(old_tag, new_tag=nil, params={})
+    def tags_rename(old_tag, new_tag=nil)
+      params = {}
       params[:old] = old_tag
       params[:new] = new_tag if new_tag
 
@@ -189,10 +202,11 @@ module Pinboard
       notes.map { |p| Note.new(Util.symbolize_keys(p)) }
     end
 
-    # Returns the note
+    # Returns an individual user note. The hash property is a
+    #   20 character long sha1 hash of the note text.
     #
     # @return [Note] the note
-    def notes_get id
+    def notes_get(id)
       options = create_params({})
       note = self.class.get("/notes/#{id}", options)['note']
 
