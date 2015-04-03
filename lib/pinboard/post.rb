@@ -28,5 +28,22 @@ module Pinboard
         toread:       toread
       }.to_json(*args)
     end
+
+    # Creates hash for API (e.g. pass it to '/posts/add')
+    #
+    # @param [Boolean, nil] replace Overwrite replace attribute if not nil
+    # @return [Hash]
+    def api_hash(replace = nil)
+      self.replace = replace unless replace.nil?
+      {
+        url:          href,
+        description:  description,
+        extended:     extended,
+        tags:         tag.join(" "),
+        replace:      replace,
+        shared:       shared,
+        toread:       toread
+      }.select { |key, value| ! value.nil? }
+    end
   end
 end

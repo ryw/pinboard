@@ -113,7 +113,9 @@ module Pinboard
 
       # Pinboard expects replace, shared and toread as yes/no instead of true/false
       [:replace, :shared, :toread].each do |boolean|
-          params[boolean] = params[boolean] ? 'yes' : 'no' if params.has_key?(boolean)
+        if params.has_key?(boolean) && !['yes', 'no'].include?(params[boolean])
+          params[boolean] = params[boolean] ? 'yes' : 'no'
+        end
       end
 
       options = create_params(params)
