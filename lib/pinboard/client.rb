@@ -38,12 +38,50 @@ module Pinboard
     # @option params [Time] :todt return only bookmarks created before this time
     # @option params [Integer] :meta include a change detection signature for each bookmark
     # @return [Array<Post>] the list of bookmarks
-    def posts(params={})
+    def posts(params = {})
       options = create_params(params)
       posts = self.class.get('/posts/all', options)['posts']['post']
       posts = [] if posts.nil?
       posts = [posts] if posts.class != Array
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
+    end
+
+    # Returns one or more posts on a single day matching the arguments.
+    # If no date or url is given, date of most recent bookmark will be used.
+    #
+    # @option params [String] :tag filter by up to three tags
+    # @option params [Time] :dt return results bookmarked on this day
+    # @option params [String] :url return bookmark for this URL
+    # @option params [Boolean] :meta include a change detection signature in a meta attribute
+    # @return [Array<Post>] the list of bookmarks
+    def get(params = {})
+      params[:dt] = params[:dt].to_date.to_s if params.is_a? Time
+      params[:meta] = params[:meta] ? 'yes' : 'no' if params.has_key?(:meta)
+      options = create_params(params)
+      posts = self.class.get('/posts/get', options)['posts']['post']
+      posts = [] if posts.nil?
+      posts = [posts] if posts.class != Array
+      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
+    end
+
+    # Returns a list of popular tags and recommended tags for a given URL.
+    # Popular tags are tags used site-wide for the url; recommended tags
+    # are drawn from the user's own tags.
+    #
+    # @param [String] url
+    # @return [Hash<String, Array>]
+    def suggest(url)
+      options = create_params({url: url})
+      suggested = self.class.get('/posts/suggest', options)['suggested']
+      popular = suggested['popular']
+      popular = [] if popular.nil?
+      popular = [popular] if popular.class != Array
+
+      recommended = suggested['recommended']
+      recommended = [] if recommended.nil?
+      recommended = [recommended] if recommended.class != Array
+
+      {:popular => popular, :recommended => recommended}
     end
 
     # Add a bookmark
@@ -68,6 +106,10 @@ module Pinboard
     def add(params={})
       # Pinboard expects multiple tags=foo,bar separated by comma instead of tag=foo&tag=bar
       params[:tags] = Array(params[:tags]).join(',') if params[:tags]
+
+      # Pinboard expects datetime as UTC timestamp in this format:
+      # 2010-12-11T19:48:02Z. Valid date range is Jan 1, 1 AD to January 1, 2100
+      params[:dt] = params[:dt].iso8601 if params[:dt].is_a? Time
 
       # Pinboard expects replace, shared and toread as yes/no instead of true/false
       [:replace, :shared, :toread].each do |boolean|
@@ -190,6 +232,21 @@ module Pinboard
       self.class.get('/tags/delete', options)
       nil
     end
+
+    # Returns the user's secret RSS key (for viewing private feeds)
+    #
+    # @return [String]
+    def user_secret()
+      self.class.get('/user/secret', create_params({}))['result']
+    end
+
+    # Returns the user's API token (for making API calls without a password)
+    #
+    # @return [String]
+    def user_api_token()
+      self.class.get('/user/api_token', create_params({}))['result']
+    end
+
 
     # Returns a list of the user's notes
     #
