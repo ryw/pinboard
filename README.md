@@ -56,6 +56,8 @@ integration and support of the following rubies in rvm:
 
  * 1.9.3
  * 2.0.0
+ * 2.1
+ * 2.2
  * jruby
  * ruby-head
 
