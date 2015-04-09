@@ -91,7 +91,10 @@ TODO
   http://datagraph.rubyforge.org/rack-throttle/
 * If get 503 response, double the throttle to two seconds
 
-Copyright
----------
-Copyright (c) 2011 Ryan Walker. See MIT-LICENSE for details.
-Copyright (c) 2013-2014 Jan-Erik Rediger.
+License
+-------
+
+See [MIT-LICENSE](MIT-LICENSE) for details.
+
+Copyright (c) 2011 Ryan Walker.  
+Copyright (c) 2013-2015 Jan-Erik Rediger.
