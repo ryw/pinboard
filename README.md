@@ -97,4 +97,4 @@ License
 See [MIT-LICENSE](MIT-LICENSE) for details.
 
 Copyright (c) 2011 Ryan Walker.  
-Copyright (c) 2013-2015 Jan-Erik Rediger.
+Copyright (c) 2013-2016 Jan-Erik Rediger.
