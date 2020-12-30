@@ -3,7 +3,7 @@ require 'helper'
 describe Pinboard::Post do
 
   describe ".all" do
-    let(:posts) { Pinboard::Post.all(auth_params) }
+    let(:posts) { Pinboard::Post.all }
 
     before do
       stub_get("posts/all").

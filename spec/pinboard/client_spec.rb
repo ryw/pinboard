@@ -2,7 +2,7 @@ require 'helper'
 
 describe Pinboard::Client do
   describe "#posts" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     context "when there are many posts" do
       before do
@@ -60,7 +60,7 @@ describe Pinboard::Client do
   end
 
   describe "#delete" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     context "when there are many posts" do
       before do
@@ -89,7 +89,7 @@ describe Pinboard::Client do
 
   describe "#add" do
     let(:client) do
-      Pinboard::Client.new(auth_params)
+      Pinboard::Client.new
     end
 
     context "where the post does not exist yet" do
@@ -237,7 +237,7 @@ describe Pinboard::Client do
   end
 
   describe "#update" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     before do
       stub_get("posts/update?").
@@ -253,7 +253,7 @@ describe Pinboard::Client do
   end
 
   describe "#recent" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     before do
       stub_get("posts/recent?").
@@ -284,7 +284,7 @@ describe Pinboard::Client do
   end
 
   describe "#dates" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     context "unfiltered" do
       before do
@@ -326,7 +326,7 @@ describe Pinboard::Client do
   end
 
   describe "#notes_list" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
     before do
       stub_get("notes/list?").
         to_return(:body => fixture("notes_list.xml"),
@@ -341,7 +341,7 @@ describe Pinboard::Client do
   end
 
   describe "#user_secret" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
     before do
       stub_get("user/secret?").
         to_return(:body => fixture("user_secret.xml"),
@@ -355,7 +355,7 @@ describe Pinboard::Client do
   end
 
   describe "#user_api_token" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
     before do
       stub_get("user/api_token?").
           to_return(:body => fixture("user_api_token.xml"),
@@ -369,7 +369,7 @@ describe Pinboard::Client do
   end
 
   describe "#get" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
 
     context "when there are many posts" do
       before do
@@ -427,7 +427,7 @@ describe Pinboard::Client do
   end
 
   describe "#suggest" do
-    let(:client) { Pinboard::Client.new(auth_params) }
+    let(:client) { Pinboard::Client.new }
     let(:url) { 'http://example.com' }
 
     context "when there are many popular and recommended tags" do
