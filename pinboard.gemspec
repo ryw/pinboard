@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'httparty', '= 0.17.3'
   s.name = 'pinboard'
-  s.version = '1.0.0'
-  s.date = '2016-01-05'
+  s.version = '1.0.1'
+  s.date = '2021-10-31'
   s.summary = "Ruby wrapper for the Pinboard API"
   s.description = "Ruby wrapper for the Pinboard API"
   s.authors = ["Ry Waker", "Jan-Erik Rediger"]
