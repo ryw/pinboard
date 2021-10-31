@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rb-fsevent'
   s.add_development_dependency 'terminal-notifier-guard'
 
-  s.add_runtime_dependency 'httparty', '= 0.11.0'
+  s.add_runtime_dependency 'httparty', '= 0.17.3'
   s.name = 'pinboard'
   s.version = '1.0.0'
   s.date = '2016-01-05'
