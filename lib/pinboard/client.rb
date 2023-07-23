@@ -73,12 +73,15 @@ module Pinboard
     def suggest(url)
       options = create_params({url: url})
       suggested = self.class.get('/posts/suggest', options)['suggested']
-      popular = suggested['popular']
-      popular = [] if popular.nil?
-      popular = [popular] if popular.class != Array
 
-      recommended = suggested['recommended']
-      recommended = [] if recommended.nil?
+      if suggested.nil?
+        popular = []
+        recommended = []
+      else
+        popular = suggested['popular']
+        recommended = suggested['recommended']
+      end
+      popular = [popular] if popular.class != Array
       recommended = [recommended] if recommended.class != Array
 
       {:popular => popular, :recommended => recommended}
