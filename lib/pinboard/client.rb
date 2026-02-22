@@ -1,13 +1,14 @@
-require 'httparty'
+require 'net/http'
+require 'uri'
 require 'time'
+require 'pinboard/xml_parser'
 
 module Pinboard
   # Raised when API returns failure
   Error = Class.new(StandardError)
 
   class Client
-    include HTTParty
-    base_uri 'api.pinboard.in:443/v1'
+    BASE_URI = URI("https://api.pinboard.in:443/v1")
 
     # Construct a new instance of the client
     #
@@ -39,10 +40,9 @@ module Pinboard
     # @option params [Integer] :meta include a change detection signature for each bookmark
     # @return [Array<Post>] the list of bookmarks
     def posts(params = {})
-      options = create_params(params)
-      posts = self.class.get('/posts/all', options)['posts']['post']
+      posts = http_get('/posts/all', params)['posts']['post']
       posts = [] if posts.nil?
-      posts = [posts] if posts.class != Array
+      posts = [posts] unless posts.is_a?(Array)
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
 
@@ -57,10 +57,9 @@ module Pinboard
     def get(params = {})
       params[:dt] = params[:dt].to_date.to_s if params.is_a? Time
       params[:meta] = params[:meta] ? 'yes' : 'no' if params.has_key?(:meta)
-      options = create_params(params)
-      posts = self.class.get('/posts/get', options)['posts']['post']
+      posts = http_get('/posts/get', params)['posts']['post']
       posts = [] if posts.nil?
-      posts = [posts] if posts.class != Array
+      posts = [posts] unless posts.is_a?(Array)
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
     end
 
@@ -71,18 +70,15 @@ module Pinboard
     # @param [String] url
     # @return [Hash<String, Array>]
     def suggest(url)
-      options = create_params({url: url})
-      suggested = self.class.get('/posts/suggest', options)['suggested']
+      suggested = http_get('/posts/suggest', {url: url})['suggested']
 
       if suggested.nil?
         popular = []
         recommended = []
       else
-        popular = suggested['popular']
-        recommended = suggested['recommended']
+        popular = Array(suggested['popular'])
+        recommended = Array(suggested['recommended'])
       end
-      popular = [popular] if popular.class != Array
-      recommended = [recommended] if recommended.class != Array
 
       {:popular => popular, :recommended => recommended}
     end
@@ -121,8 +117,7 @@ module Pinboard
         end
       end
 
-      options = create_params(params)
-      result_code = self.class.post('/posts/add', options).parsed_response["result"]["code"]
+      result_code = http_post('/posts/add', params)["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
 
@@ -136,8 +131,7 @@ module Pinboard
     #
     # @return [Time] the time a bookmark was modified
     def update
-      options = create_params({})
-      time = self.class.get('/posts/update', options)["update"]["time"]
+      time = http_get('/posts/update', {})["update"]["time"]
 
       Time.parse time
     end
@@ -151,8 +145,7 @@ module Pinboard
     #
     # @return [Array<Post>] the list of recent posts
     def recent(params={})
-      options = create_params(params)
-      posts = self.class.get('/posts/recent', options)['posts']['post']
+      posts = http_get('/posts/recent', params)['posts']['post']
       posts = [] if posts.nil?
       posts = [*posts]
       posts.map { |p| Post.new(Util.symbolize_keys(p)) }
@@ -168,8 +161,7 @@ module Pinboard
       params = {}
       params[:tag] = tag if tag
 
-      options = create_params(params)
-      dates = self.class.get('/posts/dates', options)['dates']['date']
+      dates = http_get('/posts/dates', params)['dates']['date']
       dates = [] if dates.nil?
       dates = [*dates]
       dates.each_with_object({}) { |value, hash|
@@ -186,8 +178,7 @@ module Pinboard
     # @raise [Error] if result code is not "done"
     def delete(url)
       params = { url: url }
-      options = create_params(params)
-      result_code = self.class.get('/posts/delete', options).parsed_response["result"]["code"]
+      result_code = http_get('/posts/delete', params)["result"]["code"]
 
       raise Error.new(result_code) if result_code != "done"
 
@@ -199,8 +190,7 @@ module Pinboard
     #
     # @return [Array<Tag>] List of all tags
     def tags_get(params={})
-      options = create_params(params)
-      tags = self.class.get('/tags/get', options)['tags']['tag']
+      tags = http_get('/tags/get', params)['tags']['tag']
       tags = [] if tags.nil?
       tags = [*tags]
       tags.map { |p| Tag.new(Util.symbolize_keys(p)) }
@@ -218,8 +208,7 @@ module Pinboard
       params[:old] = old_tag
       params[:new] = new_tag if new_tag
 
-      options = create_params(params)
-      result_code = self.class.get('/tags/rename', options).parsed_response["result"]
+      result_code = http_get('/tags/rename', params)["result"]
 
       raise Error.new(result_code) if result_code != "done"
 
@@ -233,8 +222,7 @@ module Pinboard
     def tags_delete(tag)
       params = { tag: tag }
 
-      options = create_params(params)
-      self.class.get('/tags/delete', options)
+      http_get('/tags/delete', params)
       nil
     end
 
@@ -242,14 +230,14 @@ module Pinboard
     #
     # @return [String]
     def user_secret()
-      self.class.get('/user/secret', create_params({}))['result']
+      http_get('/user/secret', {})['result']
     end
 
     # Returns the user's API token (for making API calls without a password)
     #
     # @return [String]
     def user_api_token()
-      self.class.get('/user/api_token', create_params({}))['result']
+      http_get('/user/api_token', {})['result']
     end
 
 
@@ -257,8 +245,7 @@ module Pinboard
     #
     # @return [Array<Note>] list of notes
     def notes_list
-      options = create_params({})
-      notes = self.class.get('/notes/list', options)['notes']['note']
+      notes = http_get('/notes/list', {})['notes']['note']
       notes = [] if notes.nil?
       notes = [*notes]
       notes.map { |p| Note.new(Util.symbolize_keys(p)) }
@@ -269,8 +256,7 @@ module Pinboard
     #
     # @return [Note] the note
     def notes_get(id)
-      options = create_params({})
-      note = self.class.get("/notes/#{id}", options)['note']
+      note = http_get("/notes/#{id}", {})['note']
 
       return nil unless note
 
@@ -287,21 +273,40 @@ module Pinboard
     end
 
     private
-    # Construct params hash for HTTP request
-    #
-    # @param [Hash] params Query arguments to include in request
-    # @return [Hash] Options hash for request
-    def create_params params
-      options = {}
-      options[:query] = params
 
-      if @auth_token
-        options[:query].merge!(auth_token: @auth_token)
-      else
-        options[:basic_auth] = @auth
+    def http_get(path, params)
+      uri = build_uri(path, params)
+      request = Net::HTTP::Get.new(uri)
+      apply_auth(request, uri)
+      execute(uri, request)
+    end
+
+    def http_post(path, params)
+      uri = build_uri(path, params)
+      request = Net::HTTP::Post.new(uri)
+      apply_auth(request, uri)
+      execute(uri, request)
+    end
+
+    def build_uri(path, params)
+      uri = URI(BASE_URI.to_s + path)
+      query = params.transform_keys(&:to_s)
+      query['auth_token'] = @auth_token if @auth_token
+      uri.query = URI.encode_www_form(query) unless query.empty?
+      uri
+    end
+
+    def apply_auth(request, uri)
+      if @auth && !@auth_token
+        request.basic_auth(@auth[:username], @auth[:password])
       end
+    end
 
-      options
+    def execute(uri, request)
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+        http.request(request)
+      end
+      XMLParser.parse(response.body)
     end
   end
 end

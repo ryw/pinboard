@@ -2,9 +2,7 @@ module Pinboard
   class Post < Struct.new(:href, :description, :extended, :tag, :time, :replace, :shared, :toread)
     def self.all(options={})
       client = Pinboard::Client.new(options)
-      posts = client.class.get('/posts/all',
-                :basic_auth => options)['posts']['post']
-      posts.map { |p| Post.new(Util.symbolize_keys(p)) }
+      client.posts
     end
 
     def initialize(attributes={})

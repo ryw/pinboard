@@ -1,4 +1,5 @@
 require 'pinboard/util'
+require 'pinboard/xml_parser'
 require 'pinboard/client'
 require 'pinboard/post'
 require 'pinboard/tag'
@@ -11,7 +12,8 @@ module Pinboard
     end
 
     def endpoint
-      Pinboard::Client.base_uri
+      uri = Pinboard::Client::BASE_URI
+      "#{uri.scheme}://#{uri.host}:#{uri.port}#{uri.path}"
     end
   end
 end

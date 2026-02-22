@@ -3,9 +3,8 @@ module Pinboard
     extend self
 
     def symbolize_keys(hash)
-      hash.inject({}) do |options, (key, value)|
+      hash.each_with_object({}) do |(key, value), options|
         options[(key.to_sym rescue key) || key] = value
-        options
       end
     end
 

@@ -5,7 +5,7 @@ describe Pinboard do
   describe ".new" do
 
     it "returns a Pinboard client" do
-      Pinboard.new.should be_a Pinboard::Client
+      expect(Pinboard.new).to be_a Pinboard::Client
     end
 
   end
@@ -13,7 +13,7 @@ describe Pinboard do
   describe ".endpoint" do
 
     it "sets the endpoint" do
-      Pinboard.endpoint.should == 'https://api.pinboard.in:443/v1'
+      expect(Pinboard.endpoint).to eq('https://api.pinboard.in:443/v1')
     end
 
   end

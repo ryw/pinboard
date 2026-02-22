@@ -30,7 +30,7 @@ describe Pinboard::Client do
               :time => Time.parse("2011-07-26T17:52:04Z")),
           ]
 
-        client.posts.should == expected
+        expect(client.posts).to eq(expected)
       end
     end
 
@@ -42,7 +42,7 @@ describe Pinboard::Client do
       end
 
       it "still returns an array" do
-        client.posts.class.should == Array
+        expect(client.posts.class).to eq(Array)
       end
     end
 
@@ -54,7 +54,7 @@ describe Pinboard::Client do
       end
 
       it "returns an empty array" do
-        client.posts.should == []
+        expect(client.posts).to eq([])
       end
     end
   end
@@ -248,7 +248,7 @@ describe Pinboard::Client do
     it "returns the time of last update" do
       expected = Time.parse "2013-04-20 13:58:56 +0200"
 
-      client.update.should == expected
+      expect(client.update).to eq(expected)
     end
   end
 
@@ -279,7 +279,7 @@ describe Pinboard::Client do
               :time => Time.parse("2011-07-26T17:52:04Z")),
       ]
 
-      client.recent.should == expected
+      expect(client.recent).to eq(expected)
     end
   end
 
@@ -301,7 +301,7 @@ describe Pinboard::Client do
           "2013-04-17" => 3
         }
 
-        client.dates.should == expected
+        expect(client.dates).to eq(expected)
       end
     end
 
@@ -320,7 +320,7 @@ describe Pinboard::Client do
           "2013-04-17" => 3
         }
 
-        client.dates("tag").should == expected
+        expect(client.dates("tag")).to eq(expected)
       end
     end
   end
@@ -335,8 +335,8 @@ describe Pinboard::Client do
 
     it "returns a list of notes" do
       notes = client.notes_list
-      notes.size.should == 2
-      notes.first.title.should == "Paul Graham on Hirin' The Ladies"
+      expect(notes.size).to eq(2)
+      expect(notes.first.title).to eq("Paul Graham on Hirin' The Ladies")
     end
   end
 
@@ -350,7 +350,7 @@ describe Pinboard::Client do
 
     it "returns the user's secret RSS key" do
       secret = client.user_secret
-      secret.should == "6493a84f72d86e7de130"
+      expect(secret).to eq("6493a84f72d86e7de130")
     end
   end
 
@@ -364,7 +364,7 @@ describe Pinboard::Client do
 
     it "returns the user's API token" do
       token = client.user_api_token
-      token.should == "XOG86E7JIYMI"
+      expect(token).to eq("XOG86E7JIYMI")
     end
   end
 
@@ -397,7 +397,7 @@ describe Pinboard::Client do
                     :time => Time.parse("2011-07-26T17:52:04Z")),
             ]
 
-        client.get.should == expected
+        expect(client.get).to eq(expected)
       end
     end
 
@@ -409,7 +409,7 @@ describe Pinboard::Client do
       end
 
       it "still returns an array" do
-        client.get.class.should == Array
+        expect(client.get.class).to eq(Array)
       end
     end
 
@@ -421,7 +421,7 @@ describe Pinboard::Client do
       end
 
       it "returns an empty array" do
-        client.get.should == []
+        expect(client.get).to eq([])
       end
     end
   end
@@ -440,8 +440,8 @@ describe Pinboard::Client do
 
       it "returns a collections of tags" do
         suggest = client.suggest(url)
-        suggest[:popular].should == %w[blog blogs]
-        suggest[:recommended].should == %w[writing weblog]
+        expect(suggest[:popular]).to eq(%w[blog blogs])
+        expect(suggest[:recommended]).to eq(%w[writing weblog])
       end
     end
 
@@ -455,8 +455,8 @@ describe Pinboard::Client do
 
       it "still returns an array" do
         suggest = client.suggest(url)
-        suggest[:popular].class.should == Array
-        suggest[:recommended].class.should == Array
+        expect(suggest[:popular].class).to eq(Array)
+        expect(suggest[:recommended].class).to eq(Array)
       end
     end
 
@@ -470,8 +470,8 @@ describe Pinboard::Client do
 
       it "returns an empty array" do
         suggest = client.suggest(url)
-        suggest[:popular].should == []
-        suggest[:recommended].should == []
+        expect(suggest[:popular]).to eq([])
+        expect(suggest[:recommended]).to eq([])
       end
     end
   end

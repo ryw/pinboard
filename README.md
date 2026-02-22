@@ -1,6 +1,8 @@
 The Pinboard Ruby Gem
 =====================
-A Ruby wrapper for the [Pinboard API](http://pinboard.in/api/).
+A Ruby wrapper for the [Pinboard API](https://pinboard.in/api/).
+
+[![CI](https://github.com/ryw/pinboard/actions/workflows/ci.yml/badge.svg)](https://github.com/ryw/pinboard/actions/workflows/ci.yml)
 
 Installation
 ------------
@@ -51,36 +53,24 @@ Future Examples (I don't need them, so I haven't written them)
 
 Ruby Support & Continuous Integration
 -------------------------------------
-I am using [travis-ci.org](http://travis-ci.org) for continuous
-integration and support of the following rubies in rvm:
-
-* 1.9.3
-* 2.0.0
-* 2.1
-* 2.2
-* jruby
-* ruby-head
-
-[![Build Status](https://secure.travis-ci.org/ryw/pinboard.png)](http://travis-ci.org/ryw/pinboard)
-
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ryw/pinboard)
+Tested on Ruby 3.0, 3.1, 3.2, and 3.3 via GitHub Actions.
 
 Links
 -----
 
-* [Pinboard API Documentation](http://pinboard.in/api/)
+* [Pinboard API Documentation](https://pinboard.in/api/)
 
 How to Contribute
 -----------------
 If you find what looks like a bug:
 
-* Check the [GitHub issue tracker](http://github.com/ryw/pinboard/issues/)
+* Check the [GitHub issue tracker](https://github.com/ryw/pinboard/issues/)
   to see if anyone else has had the same issue.
-* If you don’t see anything, create an issue with information on how to reproduce it.
+* If you don't see anything, create an issue with information on how to reproduce it.
 
 If you want to contribute an enhancement or a fix:
 
-* Fork the [project on github](http://github.com/ryw/pinboard).
+* Fork the [project on github](https://github.com/ryw/pinboard).
 * Make your changes with specs.
 * Commit the changes without messing with the Rakefile, VERSION, or history.
 * Send me a pull request.
@@ -97,5 +87,5 @@ License
 
 See [MIT-LICENSE](MIT-LICENSE) for details.
 
-Copyright (c) 2011 Ryan Walker.  
+Copyright (c) 2011-2026 Ryan Walker.
 Copyright (c) 2013-2016 Jan-Erik Rediger.

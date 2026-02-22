@@ -12,16 +12,16 @@ describe Pinboard::Post do
     end
 
     it "returns a collection" do
-      posts.count.should == 2
+      expect(posts.count).to eq(2)
     end
 
     it "loads posts with valid attributes" do
       post = posts.first
-      post.href.should == "http://foo.com/"
-      post.description.should == "Foo!"
-      post.extended.should == "long description Foo"
-      post.tag.should == ["foo", "bar"]
-      post.time.should == Time.parse('Tue Jul 26 17:52:04 UTC 2011')
+      expect(post.href).to eq("http://foo.com/")
+      expect(post.description).to eq("Foo!")
+      expect(post.extended).to eq("long description Foo")
+      expect(post.tag).to eq(["foo", "bar"])
+      expect(post.time).to eq(Time.parse('Tue Jul 26 17:52:04 UTC 2011'))
     end
   end
 
@@ -36,12 +36,11 @@ describe Pinboard::Post do
     }
 
     it "initializes attributes" do
-      post.href.should        == 'http://foo.com'
-      post.description.should == 'Foo!'
-      post.extended.should    == "long description Foo"
-      post.tag.should         == %w{rspec pinboard}
-      post.time.should        == Time.mktime(2011, 1, 1)
+      expect(post.href).to eq('http://foo.com')
+      expect(post.description).to eq('Foo!')
+      expect(post.extended).to eq("long description Foo")
+      expect(post.tag).to eq(%w{rspec pinboard})
+      expect(post.time).to eq(Time.mktime(2011, 1, 1))
     end
   end
 end
-
